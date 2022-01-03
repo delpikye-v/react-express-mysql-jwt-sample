@@ -10,11 +10,11 @@ class UserController {
 
         // router register
         this.routes.get('/pingdb', UserService.pingDb)
-        this.routes.get('/', jwtAuthMiddleware, UserService.list);
-        this.routes.get('/:id', jwtAuthMiddleware, UserService.get)
-        this.routes.post('/', jwtAuthMiddleware, UserService.create)
-        this.routes.put('/:id', jwtAuthMiddleware, UserService.update);
-        this.routes.delete('/:id', jwtAuthMiddleware, UserService.delete);
+        this.routes.get('/', jwtAuthMiddleware, UserService.list); // ONLY PERMISSION LIST
+        this.routes.get('/:id', UserService.get)
+        this.routes.post('/', UserService.create)
+        this.routes.put('/:id', UserService.update);
+        this.routes.delete('/:id', UserService.delete);
     }
 }
 

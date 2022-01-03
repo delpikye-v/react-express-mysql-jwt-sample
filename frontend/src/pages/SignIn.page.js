@@ -1,24 +1,37 @@
+// npm module
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useState } from "react";
-import renderError from "../components/error/label.error";
-import './Login.styles.scss'
+import React, { useEffect, useState } from "react";
 
+// component
+import renderError from "../components/error/label.error";
+
+// service
 import AuthService from "./service/auth.service";
 import { signInSchema } from "./service/yup.validator";
 
-const LoginPage = ({ setToken }) => {
+const SignInPage = ({ setToken, changePage }) => {
+    const [isLoading, setLoading] = useState(false)
+    const [message, setMessage] = useState('');
+
     const initialValues = {
         userName: "",
         password: "",
-    };
-    const [message, setMessage] = useState('');
+    }
+
+    useEffect(() => {
+        setLoading(false)
+    }, [])
 
     const handleSubmit = async ({ userName, password }) => {
-        const response = await AuthService.loginUser(userName, password)
-        setMessage(response.message)
-        setToken(response.accessToken);
+        setLoading(true)
 
-        if (response.accessToken) {
+        const response = await AuthService.loginUser(userName, password)
+        let users = response.result
+
+        setMessage(response.message)
+        setToken(users); // save user_config
+        setLoading(false)
+        if (users.accessToken) {
             // navigate('/dashboards')
             window.location.reload();
         }
@@ -26,6 +39,7 @@ const LoginPage = ({ setToken }) => {
 
     return (
         <div className="login-wrapper">
+            <h2 className="text-center">SignIn</h2>
             <p className="error">{ message} </p>
             <Formik
                 initialValues={initialValues}
@@ -47,6 +61,7 @@ const LoginPage = ({ setToken }) => {
                             className="form-control"
                             maxLength='50'
                             autoComplete="off"
+                            disabled={isLoading}
                         />
                         <ErrorMessage
                             name="userName"
@@ -61,14 +76,19 @@ const LoginPage = ({ setToken }) => {
                             className="form-control"
                             maxLength='50'
                             autoComplete="off"
+                            disabled={isLoading}
                         />
                         <ErrorMessage
                             name="password"
                             render={renderError}
                         />
                     </div>
-                    <div>
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                    <div className="form-group">
+                        <button disabled={isLoading} type="submit" className="btn btn-primary">Submit</button>
+                    </div>
+
+                    <div className="form-group text-center">
+                        <span className="nav-link" onClick={() => changePage(1)}>Create new Account</span>
                     </div>
                 </Form>
             </Formik>
@@ -76,4 +96,4 @@ const LoginPage = ({ setToken }) => {
     );
 };
 
-export default LoginPage;
+export default SignInPage;

@@ -20,4 +20,17 @@
         flex-direction: column;
         justify-content: center;
     }
+
+    .error.help {
+        padding: 5px 0px;
+        font-size: 12px;
+    }
+
+    .nav-link {
+        cursor: pointer;
+    }
+
+    .message {
+        color: blue;
+    }
 }

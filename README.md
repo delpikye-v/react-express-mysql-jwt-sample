@@ -1,2 +1,4 @@
 # react-nodejs-jwt-sample
-Something to test
++ React-app
++ Expressjs
++ MySql

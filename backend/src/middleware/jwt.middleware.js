@@ -13,7 +13,7 @@ const jwtAuthMiddleware = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(accessToken, JWT_SECRET);
-        req.user = decoded;
+        req.userConfigAuthSomethingSecuriryInfo = decoded;
     } catch (err) {
         return res.status(401).send({
             error: true,

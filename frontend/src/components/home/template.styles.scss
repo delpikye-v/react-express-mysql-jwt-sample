@@ -222,7 +222,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-around;
-            padding: 70px;
+            padding: 40px 0px;
             min-height: 300px;
 
             .t-icon {
@@ -297,7 +297,8 @@
         > div {
             // background-color: #fff;
             padding: 40px;
-            min-width: 320px;
+            min-width: 264px;
+            height: 228px;
             border: 1px solid #DEDEDE;
             box-sizing: border-box;
             /* SHADOW */

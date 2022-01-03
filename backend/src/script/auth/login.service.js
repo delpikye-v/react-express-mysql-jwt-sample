@@ -12,7 +12,7 @@ class LoginService {
         try {
             const { user_name, password } = req.body;
 
-            const sqlQuery = 'SELECT user_id, user_name, email, password FROM users where user_name = ?';
+            const sqlQuery = 'SELECT user_id, user_name, email, password, is_admin FROM users where user_name = ?';
             let result = await MySqlConnection.query(sqlQuery, [user_name]);
 
             let pwd = result[0]?.password;
@@ -29,10 +29,16 @@ class LoginService {
                 expiresIn: '30m',
             });
 
+            let isAdmin = result[0]['is_admin'] === 1
+
             delete result[0]['password']
+            delete result[0]['is_admin']
             res.status(200).send({
-                result: result[0],
-                accessToken: token,
+                result: {
+                    ...result[0],
+                    accessToken: token,
+                    isAdmin
+                },
             });
         } catch {
             return arguments[2](MessageException.badRequest());

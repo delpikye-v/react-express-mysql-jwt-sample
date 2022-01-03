@@ -21,8 +21,14 @@ class UserService {
     }
 
     static async list(req, res) {
+        let userConfigAuth = req.userConfigAuthSomethingSecuriryInfo
         try {
-            const sqlQuery = "SELECT user_id, user_name, email, activated, is_admin, FROM users";
+            let isAdmin = await UserService.isAdmin(userConfigAuth.user_name)
+            if (!isAdmin) {
+                return arguments[2](MessageException.notAuth());
+            }
+
+            const sqlQuery = "SELECT user_id, user_name, email, is_admin FROM users order by user_name";
             let result = await MySqlConnection.query(sqlQuery)
             res.status(200).json({
                 result
@@ -57,11 +63,12 @@ class UserService {
             }
 
             let id = shortUUID.uuid()
-            let password = '1234567'
-            // let password = Math.random().toString(36).slice(-8);
 
-            let params = [id, user_name, email, bcrypt.hashSync(password, 8), full_name, 0]
-            const sqlQuery = "INSERT INTO `users` VALUES (?, ?, ?, ?, ?, ?)"
+            let { FAKE_USER_PASSWORD } = process.env
+            let password = !FAKE_USER_PASSWORD ? Math.random().toString(36).slice(-8) : FAKE_USER_PASSWORD
+
+            let params = [id, user_name, email, bcrypt.hashSync(password, 8), full_name, 0, 0]
+            const sqlQuery = "INSERT INTO `users` VALUES (?, ?, ?, ?, ?, ?, ?)"
 
             result = await MySqlConnection.query(sqlQuery, params)
             let { affectedRows } = result
@@ -125,7 +132,7 @@ class UserService {
     static async delete(req, res) {
         try {
             const { id } = req.params
-            const sqlQuery = "DELETE FROM `users` WHERE user_id = ?"
+            const sqlQuery = "DELETE FROM `users` WHERE user_id = ? AND is_admin != 1"
             let result = await MySqlConnection.query(sqlQuery, [id])
 
             let { affectedRows } = result
@@ -137,6 +144,14 @@ class UserService {
         } catch {
             return arguments[2](MessageException.badRequest());
         }
+    }
+
+    /** Check user is admin */
+    static async isAdmin(user_name) {
+        // check exist email
+        const sqlExist = "SELECT COUNT(user_id) as counter from `users` WHERE user_name = ? AND is_admin = 1"
+        let result = await MySqlConnection.query(sqlExist, [user_name])
+        return result[0]?.counter === 1
     }
 }
 

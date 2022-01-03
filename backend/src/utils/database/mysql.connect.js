@@ -20,12 +20,13 @@ class MySqlConnection {
     }
 
     static openConnect() {
-        const { MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATABASE } = process.env;
+        const { MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATABASE, MYSQL_PORT } = process.env;
         return new Promise((resolve, reject) => {
             sqlConnection = mysql.createConnection({
                 host: MYSQL_HOST,
                 user: MYSQL_USER,
                 password: MYSQL_PASS,
+                port: MYSQL_PORT,
                 database: MYSQL_DATABASE,
                 connectTimeout: 30000,
                 waitForConnections: true,

@@ -6,6 +6,7 @@ import helmet from 'helmet';
 
 import logger from './middleware/logger.middleware.js'
 import errorMiddleware from './middleware/error.middleware.js';
+import AppService from './script/app.service.js';
 
 class App {
     express = null
@@ -40,6 +41,13 @@ class App {
     start() {
         this.express.listen(this.port, () => {
             logger.info(`Server running in ${process.env.NODE_ENV} on port ${this.port}`)
+
+            // fake data
+            try {
+                AppService.registerAdm()
+            } catch {
+                console.log('Database error')
+            }
         })
     }
 }

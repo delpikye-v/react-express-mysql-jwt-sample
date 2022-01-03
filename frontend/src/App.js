@@ -1,33 +1,40 @@
-import { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useCallback, useEffect } from "react";
+import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // page
 import HomePage from "./pages/Home.page";
 import NotFoundPage from "./pages/NotFound.page";
-import LoginPage from "./pages/Login.page";
+import SignOnPage from './pages/SignOn.page'
+
 import "./App.scss";
 
 // self
 import useToken from "./useHook/useToken";
+import UsersPage from "./pages/Users.page";
 
 function App() {
     const { token, setToken } = useToken();
 
     useEffect(() => {
-        if (token) {
+        if (token.accessToken) {
             // canbe check token if refresh page
             // let result = axios.get('/auth/check')
             // decode token and check exp
         }
     }, [])
 
-    if (!token) {
-        return <LoginPage setToken={setToken} />;
+    const isAdmin = useCallback(
+        () => token.isAdmin,
+        [token],
+    )
+
+    if (!token.accessToken) {
+        return <SignOnPage setToken={setToken} />;
     }
 
     const logout = () => {
-        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         window.location.reload();
     };
 
@@ -36,25 +43,33 @@ function App() {
             <Router>
                 <nav className="navbar navbar-expand navbar-dark bg-dark">
                     <div className="navbar-nav mr-auto">
-                        {/* <li className="nav-item">
+                        <li className="nav-item">
                             <Link to={"/"} className="nav-link">
                                 Home
                             </Link>
-                        </li> */}
+                        </li>
                     </div>
 
                     <div className="navbar-nav ml-auto right">
                         <li className="nav-item">
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <div className="nav-link" onClick={logout}>
+                            <div className="nav-link" style={{ cursor: 'pointer' }} onClick={logout}>
                                 Logout
                             </div>
                         </li>
+                        {
+                            isAdmin() && (
+                                <li className="nav-item">
+                                    <Link className="nav-link" to={'/user'}>
+                                        Users
+                                    </Link>
+                                </li>
+                            )
+                        }
                     </div>
                 </nav>
                 <Routes>
                     <Route exact path="/" element={<HomePage />} />
-                    <Route exact path="user" element={<HomePage />} />
+                    <Route exact path="/user" element={<UsersPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </Router>

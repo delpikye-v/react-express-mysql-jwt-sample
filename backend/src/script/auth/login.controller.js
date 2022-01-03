@@ -8,7 +8,7 @@ class LoginController {
 
         // router register
         this.routes.post('/sign-in', LoginService.signIn);
-        this.routes.post('/sing-up', LoginService.signUp)
+        this.routes.post('/sign-up', LoginService.signUp)
     }
 }
 
