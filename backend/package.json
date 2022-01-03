@@ -1,0 +1,76 @@
+{
+    "name": "react-express-mysql-jwt",
+    "version": "1.0.0",
+    "description": "Full-stack sample project",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "cross-env NODE_ENV=production node src/server.js",
+        "dev": "cross-env NODE_ENV=production nodemon src/server.js"
+    },
+    "license": "MIT",
+    "keywords": [
+        "express",
+        "node"
+    ],
+    "type": "module",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "helmet": "^4.6.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^6.0.12",
+        "morgan": "^1.10.0",
+        "mysql2": "^2.3.3",
+        "nodemailer": "^6.7.2",
+        "sequelize": "^6.12.4",
+        "winston": "^3.3.3"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "eslint": "^8.5.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-node": "^4.1.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.25.3",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "module-alias": "^2.2.2",
+        "nodemon": "^2.0.15",
+        "prettier": "^2.4.1",
+        "short-uuid": "^4.2.0"
+    },
+    "_moduleAliases": {
+        "@/script": "src/script",
+        "@/utils": "src/utils",
+        "@/middleware": "src/middleware"
+    },
+    "eslintConfig": {
+        "extends": "airbnb-base",
+        "env": {
+            "es6": true,
+            "browser": true
+        },
+        "rules": {
+            "brace-style": [
+                "error",
+                "stroustrup"
+            ],
+            "comma-dangle": [
+                "error",
+                "never"
+            ],
+            "no-unused-vars": [
+                "warn"
+            ],
+            "no-var": [
+                "off"
+            ],
+            "one-var": [
+                "off"
+            ]
+        }
+    }
+}

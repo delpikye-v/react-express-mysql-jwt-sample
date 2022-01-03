@@ -1,0 +1,23 @@
+body {
+    height: 100vh;
+    background: #F3F9FF;
+}
+
+.navbar-nav {
+    width: 50%;
+    padding: 4px 10px;
+}
+
+.navbar-nav.right {
+    flex-direction: row-reverse;
+
+    a {
+        cursor: pointer;
+    }
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+}
